@@ -1,5 +1,5 @@
 // on importe uniquement le module contrôleur
-import * as controleur from "./controleur.js";
+import * as controller from "./controller.js";
 
 var app = {
     // Application Constructor
@@ -12,7 +12,7 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function () {
-        controleur.init();
+        controller.init();
     }
 };
 

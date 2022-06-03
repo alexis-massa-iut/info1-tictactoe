@@ -4,7 +4,7 @@ module.exports = {
     entry: './www/js/index.js',
     output: {
         path: path.resolve(__dirname, 'www'),
-        filename: 'js/shifumi.bundle.js',
+        filename: 'js/tictactoe.bundle.js',
     },
     devtool: 'inline-source-map',
 };
