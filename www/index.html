@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Content-Security-Policy
+         Customize this policy to fit your own app's needs. For more guidance, see:
+         https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+    -->
+    <meta content="default-src *; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'"
+          http-equiv="Content-Security-Policy">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="no" name="msapplication-tap-highlight">
+    <meta content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"
+          name="viewport">
+
+    <title>Shifumi</title>
+    <!-- On inclut le CSS de JQuery Mobile -->
+    <link href="css/vendor/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css">
+    <!-- et le CSS spécifique à l'application -->
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+    <!-- Bibliothèques JS pour l'environnement (cordova, JQuery, Jquery Mobile) -->
+    <script src="cordova.js"></script> <!-- cordova.js généré à la "compilation" -->
+    <script src="js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="js/vendor/jquery.mobile-1.4.5.min.js"></script>
+    <!-- modules de l'application (index+controleur+modele) -->
+    <script src="js/shifumi.bundle.js"></script> <!-- généré par webpack à la "compilation" -->
+</head>
+<body>
+<!-- Fichier HTML = PARTIE "VUE" de l'application                                -->
+<!--   composée d'une suite de 4 pages Jquery Mobile                             -->
+<!-- Le comportement de chaque page est géré par un contrôleur (événements JS)   -->
+
+<!--======== PAGE "vueChargement" - pour attendre que le périphérique soit prêt  ========-->
+<!--           Contient un Header et un Footer qui seront dupliqués sur les autres pages  -->
+<div data-role="page" data-theme="a" id="vueChargement">
+    <header id="shifumiHeader">
+        <div data-id="monHeader" data-position="fixed" data-role="header">
+            <h1>Shifumi</h1>
+        </div>
+    </header>
+    <div class="ui-content" data-role="main">
+        <p>Chargement du jeu...</p>
+    </div>
+    <footer id="shifumiFooter">
+        <div data-id="monFooter" data-position="fixed" data-role="footer">
+            <h3>Un jeu MVC en Cordova+Jquery Mobile</h3>
+        </div>
+    </footer>
+</div>
+
+<!--======== PAGE "vueAccueil" - saisie nom joueur    ========-->
+<div data-role="page" data-theme="a" id="vueAccueil">
+    <div class="ui-content" data-role="main">
+        <p>Rappel des règles : la pierre bat les ciseaux (en les émoussant), les ciseaux battent la feuille (en la
+            coupant), la feuille bat la pierre (en l'enveloppant)</p>
+        <input id="nomJoueur" placeholder="Entrer le nom du (de la) joueur(euse)s" type="text"/>
+        <button id="btnPhoto" data-icon="camera">Photo</button>
+        <img id="imgPhoto" src="" style="width: 200px; margin-left:auto; margin-right:auto; display: block;"/>
+        <button id="btnNouvellePartie" data-icon="carat-r">Jouer</button>
+    </div>
+</div>
+
+<!--======== PAGE "vueJeu" - déroulement d'une partie ========-->
+<div data-role="page" data-theme="a" id="vueJeu">
+    <div class="ui-content ui-mini" data-role="main">
+        <p>
+            <img data-role="photoJoueur" src="" style="width: 60px; vertical-align: middle;"/>
+            <b><span data-role="nomJoueur" style="color:blue"></span></b>, choisissez votre coup...
+        </p>
+        <div class="ui-grid-b">
+            <div class="ui-block-a">
+                <button class="mybtn" id="btnJouerCiseau">
+                    <img src="images/ciseau.png">
+                </button>
+            </div>
+            <div class="ui-block-b">
+                <button class="mybtn" id="btnJouerFeuille">
+                    <img src="images/feuille.png">
+                </button>
+            </div>
+            <div class="ui-block-c">
+                <button class="mybtn" id="btnJouerPierre">
+                    <img src="images/pierre.png">
+                </button>
+            </div>
+        </div>
+        <p>La machine va jouer en même temps que vous...</p>
+        <div class="ui-grid-b">
+            <div class="ui-block-a">
+                <img class="myimg" id="machineCiseau" src="images/ciseau.png">
+            </div>
+            <div class="ui-block-b">
+                <img class="myimg" id="machineFeuille" src="images/feuille.png">
+            </div>
+            <div class="ui-block-c">
+                <img class="myimg" id="machinePierre" src="images/pierre.png">
+            </div>
+        </div>
+        <div id="resultat">
+            <p> Votre résultat : <b><span id="texteResultat"></span></b></p>
+            <button id="btnNouveauCoup" data-icon="refresh">Rejouer</button>
+            <button id="btnFinPartie" data-icon="carat-r">Score</button>
+        </div>
+    </div>
+</div>
+
+<!--======== PAGE "vueScore" - affichage des scores   ========-->
+<div data-role="page" data-theme="a" id="vueFin">
+    <div class="ui-content" data-role="main">
+        <div style="text-align: center;">
+            <img data-role="photoJoueur" src=""
+                 style="width: 200px; margin-left:auto; margin-right:auto; display: block;"" />
+            <h1><span data-role="nomJoueur" style="color:blue"></span></h1>
+            <p>
+                <span style="color:green">Victoires : <span id="nbVictoires"></span></span>
+                / <span style="color:orange">Nuls : <span id="nbNuls"></span></span>
+                / <span style="color:red">Défaites : <span id="nbDefaites"></span></span>
+            </p>
+        </div>
+        <button id="btnRetourJeu" data-icon="carat-l">Continuer</button>
+        <button id="btnSupprimer" data-icon="delete">Supprimer</button>
+        <button id="btnRetourAccueil" data-icon="home">Nouveau Joueur</button>
+    </div>
+</div>
+
+</body>
+</html>
